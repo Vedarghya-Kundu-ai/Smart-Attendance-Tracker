@@ -2,11 +2,13 @@ import React, { useRef, useState } from "react";
 import { Camera, User, Hash, CheckCircle } from "lucide-react";
 import axios from "axios";
 import { useAuth } from "../contexts/authContext";
+import { useNavigate } from "react-router-dom";
 
 function StudentProfileSetup() {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const { currentUser } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     enrollmentNumber: ''
@@ -112,6 +114,7 @@ function StudentProfileSetup() {
             email: currentUser.email,
             auth_id: currentUser.uid,
           });
+          navigate("/StudentDashboard");
           return true;
     } catch (err) {
       console.error("❌ Error setting up profile:", err);

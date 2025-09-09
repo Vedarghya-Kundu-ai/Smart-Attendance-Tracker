@@ -26,7 +26,7 @@ function SignUp() {
       console.log("User type:", role); // For now, just logging
 
       if(role === "student") {
-        navigate("/StudentDashboard");
+        navigate("/Register_Face");
       } else {
         navigate("/AdminDashboard");
       }
