@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from models import SessionLocal, StudentRegistrationsDB
+from models import SessionLocal, StudentRegistrationsDB, CreatedClassroomsDB
 
 app = FastAPI()
 
@@ -38,10 +38,31 @@ class StudentResponse(CreateNewStudent):
     class Config:
         form_attributes = True
 
-@app.post('/register_student', response_model=CreateNewStudent)
+class ClassroomCard(BaseModel):
+    auth_id : str
+    class_name : str
+    subject_code : str
+    total_student_count : int
+
+class ClassroomCardResponse(ClassroomCard):
+    id: int
+    class Config:
+        form_attributes = True
+
+# Register new student
+@app.post('/register_student', response_model=StudentResponse)
 def register_new_student(user: CreateNewStudent, db: Session = Depends(get_db) ):
     new_student = StudentRegistrationsDB(auth_id=user.auth_id, name=user.name, email=user.email, enrollment_no=user.enrollment_no, face_image_path=user.face_image_path)
     db.add(new_student)
     db.commit()
     db.refresh(new_student)
     return new_student
+
+# Add new classroom
+@app.post('/create_classroom', response_model=ClassroomCardResponse)
+def create_classroom(user: ClassroomCard, db: Session = Depends(get_db) ):
+    new_classroom = CreatedClassroomsDB(auth_id=user.auth_id, class_name=user.class_name, subject_code=user.subject_code, total_student_count=user.total_student_count)
+    db.add(new_classroom)
+    db.commit()
+    db.refresh(new_classroom)
+    return new_classroom

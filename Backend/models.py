@@ -19,6 +19,15 @@ class StudentRegistrationsDB(Base):
     enrollment_no = Column(Integer, index=True)      
     face_image_path = Column(String, index=True)
 
+class CreatedClassroomsDB(Base):
+    __tablename__ = "Created_Classrooms"
+
+    id = Column(Integer, primary_key=True, index=True)
+    auth_id = Column(String, index=True)
+    class_name = Column(String, index=True)
+    subject_code = Column(String, index=True)
+    total_student_count = Column(Integer, index=True)      
+
 class TeacherRegistrationsDB(Base):
     __tablename__ = "Teacher_Registrations"
 
@@ -28,3 +37,4 @@ class TeacherRegistrationsDB(Base):
 
 # Create tables
 Base.metadata.create_all(bind=engine)
+
