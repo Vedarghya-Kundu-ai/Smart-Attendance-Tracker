@@ -3,6 +3,7 @@ import { doCreateUserWithEmailAndPassword } from "../firebase/auth";
 import { useAuth } from "../contexts/authContext";
 import { useNavigate, Link } from "react-router-dom";
 import { updateProfile } from "firebase/auth";
+import StudentProfileSetup from "./FaceRegister";
 
 function SignUp() {
   const [email, setEmail] = useState("");

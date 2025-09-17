@@ -4,12 +4,10 @@ import axios from 'axios';
 import { useAuth } from "../../contexts/authContext";
 
 
-function CreateClass() {
+function JoinClass() {
     const { currentUser } = useAuth();
     const [formData, setFormData] = useState({
-        className: '',
-        subjectCode: '',
-        studentCount: 0
+        subjectCode: ''
     });
     
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -23,8 +21,8 @@ function CreateClass() {
     };
 
     const handleSubmit = async () => {
-        if (!formData.className.trim() || !formData.subjectCode.trim()) {
-            alert('Please fill in all required fields');
+        if (!formData.subjectCode.trim()) {
+            alert('Please enter your subject code to proceed');
             return;
         }
 
@@ -46,9 +44,9 @@ function CreateClass() {
             
             // Reset form after successful creation
             setFormData({
-                className: '',
-                subjectCode: '',
-                studentCount: 0
+                Name: '',
+                Email: '',
+                subjectCode: ''
             });
             
             alert('Class created successfully!');
@@ -63,21 +61,21 @@ function CreateClass() {
 
     const handleClear = () => {
         setFormData({
-            className: '',
-            subjectCode: '',
-            studentCount: 0
+            Name: '',
+            Email: '',
+            subjectCode: ''
         });
     };
 
-    const isFormValid = formData.className.trim() && formData.subjectCode.trim();
+    const isFormValid = formData.subjectCode.trim();
 
     return (
         <div className="w-full max-w-lg mx-auto p-6">
             {/* Header */}
             <div className="text-center mb-8">
 
-                <h2 className="text-2xl font-bold text-gray-800 mb-2">Create New Class</h2>
-                <p className="text-gray-600">Add a new class to your dashboard</p>
+                <h2 className="text-2xl font-bold text-gray-800 mb-2">Join New Class</h2>
+                <p className="text-gray-600">Add the subject code in the space given below and join your class. Incase you don't have the sunject code, ask your respective teacher for it.</p>
             </div>
 
             {/* Form Card */}
@@ -170,4 +168,4 @@ function CreateClass() {
     );
 }
 
-export default CreateClass
+export default JoinClass
