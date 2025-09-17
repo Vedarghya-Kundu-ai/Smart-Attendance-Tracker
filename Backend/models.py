@@ -1,6 +1,7 @@
-from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy import Column, ForeignKey, DateTime, Integer, String, Float, create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from datetime import datetime
 
 DATABASE_URL = "sqlite:///./database.db"  # stored in project root
 
@@ -26,7 +27,26 @@ class CreatedClassroomsDB(Base):
     auth_id = Column(String, index=True)
     class_name = Column(String, index=True)
     subject_code = Column(String, index=True)
-    total_student_count = Column(Integer, index=True)      
+    total_student_count = Column(Integer, index=True)
+
+class SessionDB(Base):
+    __tablename__ = "sessions"
+
+    id = Column(Integer, primary_key=True, index=True)
+    teacher_id = Column(String, index=True)
+    class_id = Column(Integer, ForeignKey("Created_Classrooms.id"))    # assuming classes table
+    class_name = Column(String, index=True)                 # denormalized convenience
+    subject_code = Column(String, index=True)
+    
+    started_at = Column(DateTime, default=datetime.utcnow)  # when session starts
+    ended_at = Column(DateTime, nullable=True)              # null → ongoing
+    
+    status = Column(String, default="ongoing")              # optional
+    session_code = Column(String, index=True, nullable=True)  # random/QR code
+
+    latitude = Column(Float, nullable=True)   # teacher location
+    longitude = Column(Float, nullable=True)  # teacher location
+    radius_m = Column(Integer, default=100)   # permitted radius in meters (default 100m)
 
 class TeacherRegistrationsDB(Base):
     __tablename__ = "Teacher_Registrations"
